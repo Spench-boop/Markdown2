@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown — Real Discounts, No Noise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- PWA setup -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#16191F">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Markdown">
+
+<style>
+  :root{
+    --ink:#16191F;
+    --ink-2:#1D2128;
+    --ink-3:#262B33;
+    --paper:#F5F2EA;
+    --paper-dim:#C9C5B8;
+    --orange:#FF5A1F;
+    --sage:#8B9D83;
+    --gold:#C9A35C;
+    --line:#33383F;
+    --radius:3px;
+    --ease:cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Space Grotesk', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    -webkit-tap-highlight-color:transparent;
+    overscroll-behavior-y:none;
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  .display{font-family:'Oswald', sans-serif; text-transform:uppercase; letter-spacing:0.02em;}
+
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.025) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.02) 0%, transparent 40%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  a{color:inherit; text-decoration:none;}
+
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  @keyframes popIn{
+    0%{opacity:0; transform:scale(0.92);}
+    100%{opacity:1; transform:scale(1);}
+  }
+  @keyframes stampDrop{
+    0%{opacity:0; transform:rotate(-7deg) translateY(-14px) scale(1.15);}
+    60%{opacity:1; transform:rotate(-7deg) translateY(2px) scale(0.98);}
+    100%{opacity:1; transform:rotate(-7deg) translateY(0) scale(1);}
+  }
+
+  /* ===== HEADER ===== */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(22,25,31,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{
+    max-width:1280px; margin:0 auto;
+    padding:18px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:20px;
+  }
+  .logo{
+    display:flex; align-items:baseline; gap:8px;
+    font-family:'Oswald', sans-serif;
+    font-size:1.5rem; font-weight:700;
+    letter-spacing:0.01em;
+  }
+  .logo .strike{
+    text-decoration: line-through;
+    text-decoration-color: var(--orange);
+    text-decoration-thickness: 3px;
+    color: var(--paper-dim);
+    font-size: 1.1rem;
+    font-weight:500;
+  }
+  .logo .now{ color: var(--orange); }
+
+  .last-updated{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    color:var(--paper-dim);
+    letter-spacing:0.03em;
+  }
+  .last-updated span{color:var(--sage);}
+
+  /* ===== HERO ===== */
+  .hero{
+    max-width:1280px; margin:0 auto;
+    padding:64px 28px 40px;
+    position:relative; z-index:1;
+  }
+  .hero-eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color:var(--gold);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+    animation:fadeUp 0.5s var(--ease) both;
+  }
+  .hero-eyebrow::before{
+    content:"";
+    width:8px; height:8px;
+    background:var(--sage);
+    border-radius:50%;
+    display:inline-block;
+    box-shadow:0 0 0 3px rgba(139,157,131,0.18);
+  }
+  h1.hero-title{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:clamp(2.4rem, 6vw, 4.6rem);
+    text-transform:uppercase;
+    line-height:0.96;
+    letter-spacing:-0.01em;
+    max-width:880px;
+    animation:fadeUp 0.55s var(--ease) both;
+    animation-delay:0.05s;
+  }
+  h1.hero-title em{
+    font-style:normal;
+    color:var(--ink);
+    background:var(--orange);
+    padding:0 0.15em;
+    box-shadow:3px 3px 0 rgba(0,0,0,0.25);
+    display:inline-block;
+    transform:rotate(-1deg);
+  }
+  .hero-sub{
+    margin-top:22px;
+    max-width:560px;
+    font-size:1.02rem;
+    line-height:1.55;
+    color:var(--paper-dim);
+    animation:fadeUp 0.6s var(--ease) both;
+    animation-delay:0.1s;
+  }
+
+  .stat-row{
+    display:flex; gap:32px;
+    margin-top:38px;
+    flex-wrap:wrap;
+    animation:fadeUp 0.65s var(--ease) both;
+    animation-delay:0.15s;
+  }
+  .stat{
+    border-left:2px solid var(--orange);
+    padding-left:14px;
+  }
+  .stat .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:1.7rem;
+    font-weight:700;
+    color:var(--paper);
+    line-height:1;
+  }
+  .stat .label{
+    font-size:0.72rem;
+    color:var(--paper-dim);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-top:4px;
+  }
+
+  /* ===== CONTROLS ===== */
+  .controls{
+    max-width:1280px; margin:0 auto;
+    padding:0 28px 20px;
+    position:relative; z-index:1;
+  }
+  .controls-bar{
+    display:flex; flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    padding:16px;
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+  }
+  .search-wrap{
+    flex:1 1 220px;
+    position:relative;
+  }
+  .search-wrap input{
+    width:100%;
+    background:var(--ink);
+    border:1px solid var(--line);
+    color:var(--paper);
+    padding:11px 14px 11px 36px;
+    border-radius:var(--radius);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.92rem;
+    transition:border-color 0.2s var(--ease);
+  }
+  .search-wrap input:focus{
+    outline:2px solid var(--orange);
+    outline-offset:1px;
+  }
+  .search-wrap input::placeholder{color:var(--paper-dim);}
+  .search-icon{
+    position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    color:var(--paper-dim);
+    font-size:0.9rem;
+    pointer-events:none;
+  }
+
+  select{
+    background:var(--ink);
+    border:1px solid var(--line);
+    color:var(--paper);
+    padding:11px 12px;
+    border-radius:var(--radius);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.88rem;
+    cursor:pointer;
+    transition:border-color 0.2s var(--ease), transform 0.12s var(--ease);
+  }
+  select:active{transform:scale(0.97);}
+  select:focus{outline:2px solid var(--orange); outline-offset:1px;}
+
+  /* Audience filter — pill switch */
+  .audience-row{
+    display:flex; gap:6px;
+    margin-top:12px;
+    flex-wrap:wrap;
+  }
+  .audience-pill{
+    display:flex; align-items:center; gap:6px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    padding:9px 16px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:var(--ink-2);
+    color:var(--paper-dim);
+    cursor:pointer;
+    transition:all 0.18s var(--ease);
+    white-space:nowrap;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .audience-pill svg{width:14px; height:14px; opacity:0.8; transition:opacity 0.18s var(--ease);}
+  .audience-pill:hover{border-color:var(--paper-dim); color:var(--paper);}
+  .audience-pill:active{transform:scale(0.94);}
+  .audience-pill.active{
+    background:var(--paper);
+    border-color:var(--paper);
+    color:var(--ink);
+    font-weight:700;
+  }
+  .audience-pill.active svg{opacity:1;}
+
+  .chip-group{
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .chip{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    padding:9px 14px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:transparent;
+    color:var(--paper-dim);
+    cursor:pointer;
+    transition:all 0.15s var(--ease);
+    white-space:nowrap;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .chip:hover{border-color:var(--orange); color:var(--paper);}
+  .chip:active{transform:scale(0.94);}
+  .chip.active{
+    background:var(--orange);
+    border-color:var(--orange);
+    color:var(--ink);
+    font-weight:700;
+  }
+
+  /* ===== RESULTS META ===== */
+  .results-meta{
+    max-width:1280px; margin:0 auto;
+    padding:0 28px 18px;
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    color:var(--paper-dim);
+  }
+  .results-meta .count{
+    color:var(--paper); font-weight:700;
+    display:inline-block;
+    transition:transform 0.2s var(--ease);
+  }
+
+  /* ===== GRID ===== */
+  .grid{
+    max-width:1280px; margin:0 auto;
+    padding:0 28px 100px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:28px;
+    position:relative; z-index:1;
+  }
+
+  /* ===== DEAL CARD ===== */
+  .deal{
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    position:relative;
+    display:flex; flex-direction:column;
+    transition:transform 0.22s var(--ease), border-color 0.22s var(--ease), box-shadow 0.22s var(--ease);
+    overflow:visible;
+    animation:popIn 0.4s var(--ease) both;
+    will-change:transform;
+  }
+  .deal:hover{
+    transform:translateY(-5px);
+    border-color:var(--paper-dim);
+    box-shadow:0 14px 28px -10px rgba(0,0,0,0.45);
+  }
+  .deal:active{
+    transform:translateY(-2px) scale(0.985);
+  }
+  .deal .perf{
+    height:1px;
+    background-image:radial-gradient(circle, var(--ink) 2px, transparent 2.2px);
+    background-size:14px 1px;
+    background-position:0 0;
+    position:relative;
+  }
+  .deal .perf::before, .deal .perf::after{
+    content:"";
+    position:absolute; top:-7px;
+    width:14px; height:14px;
+    background:var(--ink);
+    border-radius:50%;
+  }
+  .deal .perf::before{left:-7px;}
+  .deal .perf::after{right:-7px;}
+
+  /* ----- Media slot: shows uploaded photo, or a clean placeholder ----- */
+  .deal-media{
+    aspect-ratio:4/3;
+    background:linear-gradient(135deg, #20242c, #181b21);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .deal-media img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform 0.4s var(--ease);
+  }
+  .deal:hover .deal-media img{transform:scale(1.045);}
+
+  .media-placeholder{
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:var(--paper-dim);
+    opacity:0.75;
+  }
+  .media-placeholder svg{width:46px; height:46px; stroke:var(--paper-dim); opacity:0.55;}
+  .media-placeholder .ph-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.66rem;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+  }
+
+  /* stamped discount badge */
+  .stamp{
+    position:absolute; top:14px; left:-8px;
+    background:var(--orange);
+    color:var(--ink);
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:1.05rem;
+    padding:6px 14px 6px 18px;
+    transform:rotate(-7deg);
+    box-shadow:2px 3px 0 rgba(0,0,0,0.3);
+    letter-spacing:0.01em;
+    z-index:2;
+    animation:stampDrop 0.45s var(--ease) both;
+    animation-delay:0.05s;
+  }
+  .stamp::after{
+    content:"";
+    position:absolute; left:-7px; top:0; bottom:0;
+    width:0; height:0;
+    border-top:14px solid transparent;
+    border-bottom:14px solid transparent;
+    border-right:8px solid var(--orange);
+  }
+
+  .badge-row{
+    position:absolute; top:14px; right:10px;
+    display:flex; flex-direction:column; gap:6px;
+    align-items:flex-end;
+    z-index:2;
+  }
+  .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.66rem;
+    padding:3px 8px;
+    border-radius:2px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .tag.low{background:rgba(139,157,131,0.18); color:var(--sage); border:1px solid var(--sage);}
+  .tag.hot{background:rgba(255,90,31,0.15); color:#ff8a5c; border:1px solid #ff8a5c;}
+
+  /* audience tag — bottom-left of media */
+  .audience-tag{
+    position:absolute; bottom:10px; left:10px;
+    display:flex; align-items:center; gap:5px;
+    background:rgba(22,25,31,0.78);
+    backdrop-filter:blur(3px);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:4px 10px 4px 7px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.66rem;
+    color:var(--paper);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    z-index:2;
+  }
+  .audience-tag svg{width:12px; height:12px; opacity:0.9;}
+
+  .deal-body{
+    padding:18px;
+    display:flex; flex-direction:column; gap:10px;
+    flex:1;
+  }
+  .deal-brand{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    color:var(--gold);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  .deal-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:1.02rem;
+    line-height:1.3;
+    color:var(--paper);
+  }
+  .deal-meta{
+    display:flex; gap:8px;
+    font-size:0.76rem;
+    color:var(--paper-dim);
+    flex-wrap:wrap;
+  }
+  .deal-meta .dot{color:var(--line);}
+
+  .price-row{
+    margin-top:auto;
+    padding-top:12px;
+    border-top:1px dashed var(--line);
+    display:flex; align-items:baseline; justify-content:space-between;
+  }
+  .price-now{
+    font-family:'JetBrains Mono', monospace;
+    font-size:1.5rem;
+    font-weight:700;
+    color:var(--paper);
+  }
+  .price-was{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.88rem;
+    color:var(--paper-dim);
+    text-decoration:line-through;
+    margin-left:8px;
+  }
+  .price-save{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color:var(--sage);
+    text-align:right;
+  }
+
+  .deal-cta{
+    display:block;
+    text-align:center;
+    margin-top:12px;
+    padding:11px;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    font-size:0.85rem;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    border-radius:var(--radius);
+    transition:background 0.15s var(--ease), transform 0.12s var(--ease);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .deal-cta:hover{background:var(--orange);}
+  .deal-cta:active{transform:scale(0.96);}
+
+  /* ===== EMPTY STATE ===== */
+  .empty{
+    grid-column:1/-1;
+    text-align:center;
+    padding:90px 20px;
+    color:var(--paper-dim);
+    animation:fadeUp 0.4s var(--ease) both;
+  }
+  .empty .display{
+    font-size:1.6rem;
+    color:var(--paper);
+    margin-bottom:10px;
+  }
+  .empty p{font-size:0.92rem; max-width:380px; margin:0 auto;}
+  .empty button{
+    margin-top:18px;
+    background:transparent;
+    border:1px solid var(--orange);
+    color:var(--orange);
+    padding:10px 20px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    border-radius:var(--radius);
+    cursor:pointer;
+    transition:all 0.15s var(--ease);
+  }
+  .empty button:hover{background:var(--orange); color:var(--ink);}
+  .empty button:active{transform:scale(0.95);}
+
+  /* ===== FOOTER ===== */
+  footer{
+    border-top:1px solid var(--line);
+    padding:32px 28px;
+    max-width:1280px; margin:0 auto;
+    display:flex; justify-content:space-between;
+    flex-wrap:wrap; gap:14px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.76rem;
+    color:var(--paper-dim);
+  }
+  footer .edit-note{color:var(--gold);}
+
+  @media (max-width:640px){
+    .header-inner{flex-direction:column; align-items:flex-start; gap:6px;}
+    .hero{padding:44px 18px 28px;}
+    .controls{padding:0 18px 24px;}
+    .grid{padding:0 18px 80px; gap:20px;}
+    .results-meta{padding:0 18px 14px;}
+    footer{padding:28px 18px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo"><span class="strike">FULL PRICE</span> <span class="now">MARKDOWN</span></div>
+    <div class="last-updated">LAST CHECKED <span id="lastUpdated">—</span></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow">Tracking <span id="liveCount">—</span> live discounts right now</div>
+  <h1 class="hero-title">Every price<br>that's been <em>cut</em>.</h1>
+  <p class="hero-sub">Clothes and shoes, marked down and verified by hand — not an algorithm guessing what you might like. Filter by who it's for, category, brand, or how deep the cut goes.</p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="num" id="statDeals">0</div>
+      <div class="label">Active Deals</div>
+    </div>
+    <div class="stat">
+      <div class="num" id="statAvg">0%</div>
+      <div class="label">Avg. Markdown</div>
+    </div>
+    <div class="stat">
+      <div class="num" id="statBest">0%</div>
+      <div class="label">Deepest Cut</div>
+    </div>
+    <div class="stat">
+      <div class="num" id="statBrands">0</div>
+      <div class="label">Brands Tracked</div>
+    </div>
+  </div>
+</section>
+
+<div class="controls">
+  <div class="controls-bar">
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="searchInput" placeholder="Search brand or item…">
+    </div>
+    <select id="categoryFilter">
+      <option value="all">All categories</option>
+      <option value="shoes">Shoes</option>
+      <option value="clothes">Clothes</option>
+    </select>
+    <select id="sortFilter">
+      <option value="discount">Sort: Biggest discount</option>
+      <option value="price-low">Sort: Price low → high</option>
+      <option value="price-high">Sort: Price high → low</option>
+      <option value="newest">Sort: Newest</option>
+    </select>
+  </div>
+
+  <div class="audience-row" id="audienceRow"></div>
+  <div class="chip-group" id="brandChips" style="margin-top:10px;"></div>
+</div>
+
+<div class="results-meta">
+  <div><span class="count" id="resultCount">0</span> deals matching</div>
+  <div>updated by hand, checked regularly</div>
+</div>
+
+<div class="grid" id="dealsGrid"></div>
+
+<footer>
+  <div>Markdown — a deals tracker. Links go to the retailer; prices can change after we check them.</div>
+  <div class="edit-note">Edit deals.js to add new finds →</div>
+</footer>
+
+<script src="deals.js"></script>
+<script>
+  // ===== STATE =====
+  let activeCategory = 'all';
+  let activeBrand = 'all';
+  let activeAudience = 'all';
+  let activeSort = 'discount';
+  let searchTerm = '';
+
+  // ===== AUDIENCE CONFIG =====
+  const AUDIENCES = [
+    { id: 'all',    label: 'Everyone' },
+    { id: 'men',    label: 'Men' },
+    { id: 'women',  label: 'Women' },
+    { id: 'kids',   label: 'Kids' },
+    { id: 'unisex', label: 'Unisex' }
+  ];
+
+  const audienceIcons = {
+    all:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>`,
+    men:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="14" r="6"/><path d="M14.5 9.5L20 4M20 4h-4.5M20 4v4.5"/></svg>`,
+    women:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="9" r="6"/><path d="M12 15v7M9 19h6"/></svg>`,
+    kids:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="6" r="2.6"/><path d="M7 21v-5a5 5 0 0 1 10 0v5M9 21v-3M15 21v-3"/></svg>`,
+    unisex: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="7.5" r="3.3"/><path d="M9 21v-4M15 21v-4M12 10.8v5.7M8.3 13.6h7.4"/></svg>`
+  };
+
+  // ===== CATEGORY / PLACEHOLDER ICONS (clean line art, no stock photos) =====
+  const itemIcons = {
+    sneaker:  `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 38c0-2 1.5-3 3-3.2l6-0.8 4-6c1.5-2.3 4-3.6 6.6-3.4l5.4 0.4c2 0.2 3.8 1.3 4.8 3l2 3.4 9.5 3c3 1 5.7 3 7.2 5.8l1 2c0.6 1.2-0.2 2.6-1.5 2.6H8c-2.2 0-4-1.8-4-4v-2.4z"/><path d="M17 28l1.5 5.5M27 25.5L29 31M13 38h38M20 38v4M30 38v4M40 38v4"/></svg>`,
+    boot:     `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 8h12v22l8 6c5 2 8 6 8 11v3c0 3-2 5-5 5H14c-3 0-5-2-5-5V35c0-3 1-5 4-7l9-6V8z"/><path d="M22 16h12M22 22h12"/></svg>`,
+    heel:     `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 34c4-4 10-6 16-6 8 0 14 4 20 4l4-1-3 8-2 10H22l-2-9-10-3z"/><path d="M46 32l6 22"/></svg>`,
+    sandal:   `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="30" cy="42" rx="20" ry="8"/><path d="M18 36c3-10 8-22 12-26M30 35c2-9 5-19 8-24M42 38c2-8 4-16 5-21"/></svg>`,
+    hoodie:   `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 14c0-4 4-6 10-6s10 2 10 6l10 8-6 7-4-3v24H22V26l-4 3-6-7 10-8z"/><path d="M26 14a6 6 0 0 0 12 0"/></svg>`,
+    tshirt:   `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 10l-14 8 6 9 6-3v28h24V24l6 3 6-9-14-8c0 4-4 6-10 6s-10-2-10-6z"/></svg>`,
+    jacket:   `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 9l-13 7 5 9 6-3-1 30h22l-1-30 6 3 5-9-13-7c0 0-2 4-8 4s-8-4-8-4z"/><path d="M32 13v34"/></svg>`,
+    dress:    `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M26 8h12l3 10-3 4 8 26H20l8-26-3-4 1-10z"/><path d="M26 8c0 4 2.5 6 6 6s6-2 6-6"/></svg>`,
+    pants:    `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 8h24l1 12-2 34h-8l-3-26-3 26h-8l-2-34 1-12z"/><path d="M20 14h24"/></svg>`,
+    sweater:  `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12l-12 7 5 9 6-4v30h24V24l6 4 5-9-12-7c0 4-4.5 6-11 6s-11-2-11-6z"/><path d="M22 38h20M22 30h20"/></svg>`
+  };
+
+  function inferIcon(category, title){
+    const t = title.toLowerCase();
+    if(category === 'shoes'){
+      if(t.includes('boot')) return itemIcons.boot;
+      if(t.includes('heel') || t.includes('pump')) return itemIcons.heel;
+      if(t.includes('sandal') || t.includes('slide')) return itemIcons.sandal;
+      return itemIcons.sneaker;
+    }
+    if(t.includes('hoodie')) return itemIcons.hoodie;
+    if(t.includes('jacket') || t.includes('coat')) return itemIcons.jacket;
+    if(t.includes('dress')) return itemIcons.dress;
+    if(t.includes('pant') || t.includes('cargo') || t.includes('jean')) return itemIcons.pants;
+    if(t.includes('sweater') || t.includes('jumper') || t.includes('knit')) return itemIcons.sweater;
+    return itemIcons.tshirt;
+  }
+
+  function formatDate(d){
+    return new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+  }
+
+  function computeStats(deals){
+    document.getElementById('statDeals').textContent = deals.length;
+    if(deals.length){
+      const avg = Math.round(deals.reduce((s,d)=>s+d.discount,0)/deals.length);
+      const best = Math.max(...deals.map(d=>d.discount));
+      const brands = new Set(deals.map(d=>d.brand)).size;
+      document.getElementById('statAvg').textContent = avg + '%';
+      document.getElementById('statBest').textContent = best + '%';
+      document.getElementById('statBrands').textContent = brands;
+      document.getElementById('liveCount').textContent = deals.length;
+    }
+  }
+
+  function buildAudienceRow(){
+    const wrap = document.getElementById('audienceRow');
+    wrap.innerHTML = '';
+    AUDIENCES.forEach(a=>{
+      const pill = document.createElement('button');
+      pill.className = 'audience-pill' + (a.id === 'all' ? ' active' : '');
+      pill.innerHTML = `${audienceIcons[a.id]}<span>${a.label}</span>`;
+      pill.onclick = () => { activeAudience = a.id; refreshAudienceState(); render(); };
+      wrap.appendChild(pill);
+    });
+  }
+
+  function refreshAudienceState(){
+    document.querySelectorAll('.audience-pill').forEach((p, i)=>{
+      p.classList.toggle('active', AUDIENCES[i].id === activeAudience);
+    });
+  }
+
+  function buildBrandChips(deals){
+    const brands = [...new Set(deals.map(d=>d.brand))].sort();
+    const wrap = document.getElementById('brandChips');
+    wrap.innerHTML = '';
+    const allChip = document.createElement('button');
+    allChip.className = 'chip active';
+    allChip.textContent = 'All brands';
+    allChip.onclick = () => { activeBrand='all'; refreshChipState(); render(); };
+    wrap.appendChild(allChip);
+    brands.forEach(b=>{
+      const chip = document.createElement('button');
+      chip.className = 'chip';
+      chip.textContent = b;
+      chip.onclick = () => { activeBrand=b; refreshChipState(); render(); };
+      wrap.appendChild(chip);
+    });
+  }
+
+  function refreshChipState(){
+    document.querySelectorAll('#brandChips .chip').forEach(c=>{
+      const isAll = c.textContent === 'All brands';
+      c.classList.toggle('active', (isAll && activeBrand==='all') || c.textContent===activeBrand);
+    });
+  }
+
+  function applyFilters(){
+    let result = DEALS.filter(d=>{
+      const matchesCategory = activeCategory==='all' || d.category===activeCategory;
+      const matchesBrand = activeBrand==='all' || d.brand===activeBrand;
+      const matchesAudience = activeAudience==='all' || d.audience===activeAudience;
+      const matchesSearch = searchTerm==='' ||
+        d.title.toLowerCase().includes(searchTerm) ||
+        d.brand.toLowerCase().includes(searchTerm);
+      return matchesCategory && matchesBrand && matchesAudience && matchesSearch;
+    });
+
+    switch(activeSort){
+      case 'discount': result.sort((a,b)=>b.discount-a.discount); break;
+      case 'price-low': result.sort((a,b)=>a.priceNow-b.priceNow); break;
+      case 'price-high': result.sort((a,b)=>b.priceNow-a.priceNow); break;
+      case 'newest': result.sort((a,b)=>new Date(b.dateFound)-new Date(a.dateFound)); break;
+    }
+    return result;
+  }
+
+  function render(){
+    const grid = document.getElementById('dealsGrid');
+    const filtered = applyFilters();
+    const countEl = document.getElementById('resultCount');
+    countEl.textContent = filtered.length;
+    countEl.style.transform = 'scale(1.25)';
+    requestAnimationFrame(()=>{ countEl.style.transform = 'scale(1)'; });
+
+    if(filtered.length===0){
+      grid.innerHTML = `
+        <div class="empty">
+          <div class="display">No deals match that.</div>
+          <p>Try a different brand, audience, category, or clear your search — or check back, new markdowns get added regularly.</p>
+          <button onclick="clearFilters()">Clear filters</button>
+        </div>`;
+      return;
+    }
+
+    grid.innerHTML = filtered.map((d, i) => {
+      const savings = (d.priceWas - d.priceNow).toFixed(2);
+      const isHot = d.discount >= 50;
+      const isLow = d.stockLevel === 'low';
+      const audience = AUDIENCES.find(a=>a.id===d.audience) || AUDIENCES[0];
+      const hasImage = d.image && d.image.trim() !== '';
+
+      const mediaContent = hasImage
+        ? `<img src="${d.image}" alt="${d.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;media-placeholder&quot;>${inferIcon(d.category, d.title)}<span class=&quot;ph-label&quot;>Add photo</span></div>'">`
+        : `<div class="media-placeholder">${inferIcon(d.category, d.title)}<span class="ph-label">Add photo</span></div>`;
+
+      return `
+      <div class="deal" style="animation-delay:${Math.min(i * 0.04, 0.4)}s">
+        <div class="deal-media">
+          <div class="stamp">−${d.discount}%</div>
+          <div class="badge-row">
+            ${isHot ? '<span class="tag hot">Deep cut</span>' : ''}
+            ${isLow ? '<span class="tag low">Low stock</span>' : ''}
+          </div>
+          ${mediaContent}
+          <div class="audience-tag">${audienceIcons[audience.id]}<span>${audience.label}</span></div>
+        </div>
+        <div class="perf"></div>
+        <div class="deal-body">
+          <div class="deal-brand">${d.brand}</div>
+          <div class="deal-title">${d.title}</div>
+          <div class="deal-meta">
+            <span>${d.category === 'shoes' ? 'Shoes' : 'Clothes'}</span>
+            <span class="dot">·</span>
+            <span>${d.size || 'See sizes'}</span>
+            <span class="dot">·</span>
+            <span>Found ${formatDate(d.dateFound)}</span>
+          </div>
+          <div class="price-row">
+            <div>
+              <span class="price-now">€${d.priceNow.toFixed(2)}</span>
+              <span class="price-was">€${d.priceWas.toFixed(2)}</span>
+            </div>
+            <div class="price-save">save €${savings}</div>
+          </div>
+          <a class="deal-cta" href="${d.url}" target="_blank" rel="noopener">View deal →</a>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function clearFilters(){
+    activeCategory='all'; activeBrand='all'; activeAudience='all'; activeSort='discount'; searchTerm='';
+    document.getElementById('categoryFilter').value='all';
+    document.getElementById('sortFilter').value='discount';
+    document.getElementById('searchInput').value='';
+    refreshChipState();
+    refreshAudienceState();
+    render();
+  }
+
+  // ===== EVENTS =====
+  document.getElementById('categoryFilter').addEventListener('change', e=>{
+    activeCategory = e.target.value; render();
+  });
+  document.getElementById('sortFilter').addEventListener('change', e=>{
+    activeSort = e.target.value; render();
+  });
+  document.getElementById('searchInput').addEventListener('input', e=>{
+    searchTerm = e.target.value.toLowerCase(); render();
+  });
+
+  // ===== INIT =====
+  document.getElementById('lastUpdated').textContent = formatDate(SITE_META.lastUpdated);
+  computeStats(DEALS);
+  buildAudienceRow();
+  buildBrandChips(DEALS);
+  render();
+
+  // ===== PWA: register service worker (lets the site be "installed") =====
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(err => {
+        console.log('Service worker registration failed:', err);
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
