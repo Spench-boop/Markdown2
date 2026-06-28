@@ -71,8 +71,8 @@ const DEALS = [
   {
     brand: "Adidas",
     title: "adidas National team of Italy 26 Away Men's Football Jersey",
-    category: "t-shirts",
-    audience: "men",
+    category: "Clothes",
+    audience: "Men",
     priceWas: 100.00,
     priceNow: 80.00,
     discount: 20,
