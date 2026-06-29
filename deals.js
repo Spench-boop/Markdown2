@@ -78,7 +78,7 @@ const DEALS = [
     discount: 20,
     size: "Sizes S,M,L,XL",
     url: "https://www.jdsports.cy/en/500933-adidas-m-italy-26-away-jersey.html#/506298-color-aerblu",
-    image: "",
+    image: "adidas-m-italy-26-away-jersey.jpg",
     dateFound: "2026-06-24",
     stockLevel: "normal"
   },
