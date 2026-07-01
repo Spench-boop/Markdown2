@@ -55,15 +55,15 @@ const DEALS = [
     stockLevel: "low"
   },
   {
-    brand: "Zara",
-    title: "Oversized Wool-Blend Coat",
+    brand: "The North Face",
+    title: "The North Face Liquid Box Men's T-shirt",
     category: "clothes",
-    audience: "women",
-    priceWas: 89.95,
-    priceNow: 49.95,
-    discount: 44,
+    audience: "men",
+    priceWas: 37,
+    priceNow: 30,
+    discount: 19,
     size: "XS–XL",
-    url: "https://www.zara.com",
+    url: "https://www.jdsports.cy/en/500459-the-north-face-m-lqd-box-nse-os-ss-tee.html#/505823-color-tnf_white",
     image: "",
     dateFound: "2026-06-25",
     stockLevel: "normal"
