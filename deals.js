@@ -64,7 +64,7 @@ const DEALS = [
     discount: 19,
     size: "XS–XL",
     url: "https://www.jdsports.cy/en/500459-the-north-face-m-lqd-box-nse-os-ss-tee.html#/505823-color-tnf_white",
-    image: "",
+    image: "the-north-face-m-lqd-box-nse-os-ss-tee.jpg",
     dateFound: "2026-06-25",
     stockLevel: "normal"
   },
